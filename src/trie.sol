@@ -94,8 +94,12 @@ contract TrieTest is Test, Reporter {
   function formatTree(bytes current) internal {
     //@doc "`bytes current`" [label="`string string(current)`"];
     for (uint i; i<trie.getChildrenLength(current); i++) {
-      bytes memory child = __concatOne(current,trie.getChildAtIndex(current,i));
-      //@doc "`bytes current`" -> "`bytes child`";
+      byte next = trie.getChildAtIndex(current,i);
+      bytes memory child = __concatOne(current,next);
+      bytes memory _next = new bytes(1); // only needed for string convertion
+      _next[0] = next;
+      
+      //@doc "`bytes current`" -> "`bytes child`" [label="`string string(_next)`"];
       formatTree(child);
     }
   }
